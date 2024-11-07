@@ -1,20 +1,29 @@
 import express from "express";
-import healthRoutes from "./routes/healthRoutes";
 import dotenv from "dotenv";
-import authRoutes from './routes/authRoutes';
 import mongoose from 'mongoose';
+
 import { connectDB } from './config/database';
+import healthRoutes from "./routes/healthRoutes";
+import authRoutes from './routes/authRoutes';
+import bookRouter from "./routes/book.route";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
+// Connect to the database
 connectDB();
+
+// Root endpoint
+app.get("/", (_, res) => {
+  res.status(200).send("Server is up and running 💫");
+});
 
 // API Routes
 app.use("/api", healthRoutes);
 app.use('/api/auth', authRoutes);
+app.use("/api/books", bookRouter);
 
 // Handle 404 errors
 app.use((req, res) => {
