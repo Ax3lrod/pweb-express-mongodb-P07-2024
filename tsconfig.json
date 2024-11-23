@@ -10,7 +10,7 @@
     "sourceMap": true,
     "noEmit": false,
     "outDir": "./dist",
-    "baseUrl": "./src",
+    "baseUrl": "public",
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": false,
