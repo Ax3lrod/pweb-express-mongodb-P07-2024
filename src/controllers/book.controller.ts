@@ -1,16 +1,30 @@
-import type { Request, Response, NextFunction } from 'express';
-import BookService from '../services/book.services';
+import type { Request, Response, NextFunction } from "express";
+import BookService from "../services/book.services";
 
 export class BookController {
-  async addBook(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try { 
+  async addBook(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      // Validate initialQty and qty
+      const { initialQty, qty } = req.body;
+      if (initialQty < 0 || qty < 0) {
+        res
+          .status(400)
+          .json({ message: "initialQty and qty must be 0 or greater." });
+        return;
+      }
+
+      // Add book via the service
       const book = await BookService.addBook(req.body);
       res.status(201).json(book);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
       } else {
-        res.status(400).json({ message: 'Unknown error' });
+        res.status(400).json({ message: "Unknown error" });
       }
     }
   }
@@ -23,7 +37,7 @@ export class BookController {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
       } else {
-        res.status(400).json({ message: 'Unknown error' });
+        res.status(400).json({ message: "Unknown error" });
       }
     }
   }
@@ -32,7 +46,7 @@ export class BookController {
     try {
       const book = await BookService.getBookById(req.params.id);
       if (!book) {
-        res.status(404).json({ message: 'Book not found' });
+        res.status(404).json({ message: "Book not found" });
         return;
       }
       res.json(book);
@@ -40,39 +54,50 @@ export class BookController {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message });
       } else {
-        res.status(500).json({ message: 'Unknown error' });
+        res.status(500).json({ message: "Unknown error" });
       }
     }
   }
 
   async modifyBook(req: Request, res: Response) {
     try {
-        const book = await BookService.modifyBook(req.params.id, req.body);
-        res.json(book);
+      const book = await BookService.modifyBook(req.params.id, req.body);
+      res.json(book);
     } catch (error) {
-        if (error instanceof Error && error.message.includes('Invalid book ID format')) {
-            res.status(400).json({ message: error.message }); 
-        } else if (error instanceof Error && error.message.includes('not found')) {
-            res.status(404).json({ message: error.message });
-        } else {
-            res.status(500).json({ message: 'Internal server error' }); 
-        }
+      if (
+        error instanceof Error &&
+        error.message.includes("Invalid book ID format")
+      ) {
+        res.status(400).json({ message: error.message });
+      } else if (
+        error instanceof Error &&
+        error.message.includes("not found")
+      ) {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: "Internal server error" });
+      }
     }
   }
 
   async removeBook(req: Request, res: Response) {
     try {
-        const book = await BookService.removeBook(req.params.id);
-        res.json({ message: 'Book deleted successfully', book });
+      const book = await BookService.removeBook(req.params.id);
+      res.json({ message: "Book deleted successfully", book });
     } catch (error) {
-        if (error instanceof Error && error.message.includes('Invalid book ID format')) {
-            res.status(400).json({ message: error.message });
-        } else if (error instanceof Error && error.message.includes('not found')) {
-            res.status(404).json({ message: error.message });
-        } else {
-            res.status(500).json({ message: 'Internal server error' });
-        }
+      if (
+        error instanceof Error &&
+        error.message.includes("Invalid book ID format")
+      ) {
+        res.status(400).json({ message: error.message });
+      } else if (
+        error instanceof Error &&
+        error.message.includes("not found")
+      ) {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: "Internal server error" });
+      }
     }
   }
-  
 }

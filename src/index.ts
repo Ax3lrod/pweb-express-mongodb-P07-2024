@@ -24,7 +24,7 @@ app.get("/", (_, res) => {
 // API Routes
 app.use("/api", healthRoutes);
 app.use('/api/auth', authRoutes);
-app.use("/api/books", bookRouter);
+app.use("/api/book", bookRouter);
 app.use('/api/mechanism', mechanismRoutes);
 
 // Handle 404 errors
