@@ -10,7 +10,7 @@
     "sourceMap": true,
     "noEmit": false,
     "outDir": "./dist",
-    "baseUrl": "public",
+    "baseUrl": "src",
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": false,
@@ -23,5 +23,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true
-  }
+  },
+  "include": ["src/**/*.ts", "src/*.ts", "api/*.ts"]
 }

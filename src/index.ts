@@ -1,12 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-import { connectDB } from './config/database';
+import { connectDB } from "./config/database";
 import healthRoutes from "./routes/healthRoutes";
-import authRoutes from './routes/authRoutes';
+import authRoutes from "./routes/authRoutes";
 import bookRouter from "./routes/book.route";
-import mechanismRoutes from './routes/mechanism.route';
+import mechanismRoutes from "./routes/mechanism.route";
 
 dotenv.config();
 
@@ -23,9 +23,9 @@ app.get("/", (_, res) => {
 
 // API Routes
 app.use("/api", healthRoutes);
-app.use('/api/auth', authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/book", bookRouter);
-app.use('/api/mechanism', mechanismRoutes);
+app.use("/api/mechanism", mechanismRoutes);
 
 // Handle 404 errors
 app.use((req, res) => {
@@ -40,3 +40,5 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+export default app;
